@@ -1,4 +1,3 @@
-//
 //  WeatherEyeiPhoneUITests.swift
 //  WeatherEyeiPhoneUITests
 //
@@ -28,25 +27,34 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         super.tearDown()
     }
     
-    
-    
-    func test_1_ObsDetail() {
-        let collectionViewsQuery = XCUIApplication().collectionViews
-        collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
-        let Obs_Labels = ["WIND","WIND GUST","HUMIDITY","PRESSURE","VISIBILITY","CEILING","SUNRISE","SUNSET","YESTERDAY"]
-        let Obs_Values_Toronto = ["16","24","70","1020.9","7","1725","4","-1","06:49","19:50"]
-        for Obs_elem in Obs_Labels + Obs_Values_Toronto{
-            XCTAssert(collectionViewsQuery.collectionViews.staticTexts[Obs_elem].exists)
-        }
-    }
-    
-    
-    func test_2_AirQuality() {
+    func test001_ObsDetailTest() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
+        let collectionViewsQuery = XCUIApplication().collectionViews
+        sleep(5)
+        collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
+        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
+        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND GUST"].exists)
+        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["HUMIDITY"].exists)
+        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["PRESSURE"].exists)
+        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["VISIBILITY"].exists)
+        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["CEILING"].exists)
+        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["SUNRISE"].exists)
+        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["SUNSET"].exists)
+        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["YESTERDAY"].exists)
+        
+    }
+    
+    
+    func test002_AirQuality() {
+        // Use recording to get started writing UI tests.
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
+        sleep(5)
         collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
         collectionViewsQuery.collectionViews.buttons["AIR QUALITY"].tap()
         XCTAssert(app.staticTexts["CURRENT AIR QUALITY (AQHI)"].exists)
@@ -55,12 +63,13 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         
     }
     
-    func test_3_UV() {
+    func test003_UV() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
+        sleep(5)
         collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
         collectionViewsQuery.collectionViews.buttons["UV REPORT"].tap()
         XCTAssert(app.staticTexts["CURRENT UV REPORT"].exists)
@@ -77,6 +86,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
+        sleep(5)
         collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
         collectionViewsQuery.collectionViews.buttons["POLLEN"].tap()
         XCTAssert(app.staticTexts["TODAY'S POLLEN REPORT"].exists)
@@ -85,12 +95,13 @@ class WeatherEyeiPhoneUITests: XCTestCase {
     }
     
     
-    func test005_PollenForecast() {
+    func testA005_PollenForecast() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
+        sleep(5)
         collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
         collectionViewsQuery.collectionViews.buttons["POLLEN"].tap()
         app.staticTexts["VIEW FULL POLLEN REPORT"].tap()
@@ -105,6 +116,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
         let btnDashboardEButton = collectionViewsQuery.buttons["btn dashboard e"]
+        sleep(5)
         btnDashboardEButton.tap()
         collectionViewsQuery.staticTexts["News"].tap()
         XCTAssert(collectionViewsQuery.staticTexts["News"].exists)
@@ -134,6 +146,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
     func test007_numberOfNewsArticles() {
         
         let collectionViewsQuery = XCUIApplication().collectionViews
+        sleep(5)
         collectionViewsQuery.buttons["btn dashboard e"].tap()
         
         let newsStaticText = collectionViewsQuery.staticTexts["News"]
@@ -150,6 +163,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
     func test008_numberOfVideoArticles() {
         
         let collectionViewsQuery = XCUIApplication().collectionViews
+        sleep(5)
         collectionViewsQuery.buttons["btn dashboard e"].tap()
         
         let videoStaticText = collectionViewsQuery.staticTexts["Video"]
@@ -169,6 +183,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
         let btnDashboardEButton = collectionViewsQuery.buttons["btn dashboard e"]
+        sleep(5)
         btnDashboardEButton.tap()
         collectionViewsQuery.staticTexts["Video"].tap()
         XCTAssert(collectionViewsQuery.staticTexts["Videos"].exists)
@@ -192,6 +207,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
         let btnDashboardEButton = collectionViewsQuery.buttons["btn dashboard e"]
+        sleep(5)
         btnDashboardEButton.tap()
         collectionViewsQuery.staticTexts["Weather Radar"].tap()
         sleep(10)
@@ -286,6 +302,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
+        sleep(5)
         collectionViewsQuery.buttons["btn dashboard e"].tap()
         collectionViewsQuery.staticTexts["Charts"].tap()
         
@@ -313,6 +330,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
+        sleep(5)
         collectionViewsQuery.buttons["btn dashboard e"].tap()
         app.buttons["icon dash settings"].tap()
         
@@ -407,6 +425,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         
         
         let app = XCUIApplication()
+        sleep(5)
         app.collectionViews.buttons["btn dashboard e"].tap()
         app.buttons["icon dash settings"].tap()
         let app2 = app
@@ -428,6 +447,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
     func test015_FAQ(){
         
         let app = XCUIApplication()
+        sleep(5)
         app.collectionViews.buttons["btn dashboard e"].tap()
         app.buttons["icon dash faq"].tap()
         app.swipeUp()
@@ -441,6 +461,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
     func test016_TrendingNow(){
         
         let app = XCUIApplication()
+        sleep(5)
         app.collectionViews.buttons["btn dashboard e"].tap()
         let collectionViewsQuery = app.collectionViews
         let featuredNewsStaticText = collectionViewsQuery.collectionViews.staticTexts["FEATURED NEWS"]
@@ -484,7 +505,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         //let maxNumberOfSavedLocations = 20;
         //        for var i = 0; i < canadianCities.count && i < maxNumberOfSavedLocations; i+=1
         for index in canadianCities{
-            
+            sleep(5)
             app.collectionViews.buttons["btn dashboard e"].tap()
             
             let window = app.children(matching: .window).element(boundBy: 0)
@@ -528,8 +549,8 @@ class WeatherEyeiPhoneUITests: XCTestCase {
     
     func test019_TurnFollowMeOff(){
         
-        
         let app = XCUIApplication()
+        sleep(5)
         app.collectionViews.buttons["btn dashboard e"].tap()
         
         let window = app.children(matching: .window).element(boundBy: 0)
@@ -546,7 +567,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         textFields.tap()
         textFields.typeText("Cooksville")
         app.tables.staticTexts["Ontario, CA"].tap()
-        XCTAssert(app.collectionViews.staticTexts["WIND"].exists)
+        sleep(3)
         app.collectionViews.buttons["btn dashboard e"].tap()
         window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
         XCTAssert(app.switches["0"].exists)
@@ -554,9 +575,8 @@ class WeatherEyeiPhoneUITests: XCTestCase {
     }
     
     
-    
-    
     func test020_TurnFollowMeOn(){
+        
         
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
@@ -566,12 +586,12 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
         app.switches["0"].tap()
         XCTAssert(app.switches["1"].exists)
-        window.children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .other).element(boundBy: 4).children(matching: .scrollView).element(boundBy: 1).children(matching: .button).element.tap()
-        XCTAssert(app.collectionViews.staticTexts["WIND"].exists)
+        window.children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .other).element(boundBy: 3).children(matching: .scrollView).element(boundBy: 1).children(matching: .button).element.tap()
         app.swipeLeft()
-        XCTAssert(app.collectionViews.staticTexts["WIND"].exists)
-        
+        collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
+        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
     }
+    
     
     func test021_36HoursModule(){
         
@@ -589,9 +609,9 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         XCTAssert(ShortTermModule.children(matching: .other).element(boundBy: 3).staticTexts["Evening"].exists)
         XCTAssert(ShortTermModule.children(matching: .other).element(boundBy: 4).staticTexts["Overnight"].exists)
         
+        
     }
     
     
 }
-
 
