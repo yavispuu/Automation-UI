@@ -27,25 +27,16 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         super.tearDown()
     }
     
-    func test001_ObsDetailTest() {
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        
+    
+    func test001_ObsDetail() {
         let collectionViewsQuery = XCUIApplication().collectionViews
         sleep(5)
         collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
-        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
-        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND GUST"].exists)
-        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["HUMIDITY"].exists)
-        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["PRESSURE"].exists)
-        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["VISIBILITY"].exists)
-        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["CEILING"].exists)
-        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["SUNRISE"].exists)
-        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["SUNSET"].exists)
-        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["YESTERDAY"].exists)
-        
+        let Obs_Labels = ["WIND","WIND GUST","HUMIDITY","PRESSURE","VISIBILITY","CEILING","SUNRISE","SUNSET","YESTERDAY"]
+        for Obs_elem in Obs_Labels{
+            XCTAssert(collectionViewsQuery.collectionViews.staticTexts[Obs_elem].exists)
+        }
     }
-    
     
     func test002_AirQuality() {
         // Use recording to get started writing UI tests.
@@ -76,6 +67,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).children(matching: .other).element(boundBy: 1).children(matching: .button).element.tap()
         XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
         
+        
     }
     
     
@@ -95,7 +87,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
     }
     
     
-    func testA005_PollenForecast() {
+    func test005_PollenForecast() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
@@ -595,7 +587,6 @@ class WeatherEyeiPhoneUITests: XCTestCase {
     
     func test021_36HoursModule(){
         
-        
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
         sleep(3)
@@ -610,6 +601,58 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         XCTAssert(ShortTermModule.children(matching: .other).element(boundBy: 4).staticTexts["Overnight"].exists)
         
         
+    }
+    
+    func test022_UGCPhotosScreen(){
+        
+        let app = XCUIApplication()
+        let collectionViewsQuery = app.collectionViews
+        collectionViewsQuery.buttons["btn dashboard e"].tap()
+        collectionViewsQuery.staticTexts["Photos"].tap()
+        let Photos_Buttons = ["Latest", "Most Popular", "btn ugc search", "btn ugc upload","icon header back"]
+        
+        // Check elements on Latest Photos screen
+        app.swipeUp()
+        XCTAssert(app.staticTexts["Photo Gallery"].exists)
+        for Photos_elem in Photos_Buttons{
+            XCTAssert(app.buttons[Photos_elem].exists)
+        }
+        
+        // Check elements on Most Popular Photos screen
+        app.buttons["Most Popular"].tap()
+        app.swipeUp()
+        XCTAssert(app.staticTexts["Photo Gallery"].exists)
+        for Photos_elem in Photos_Buttons{
+            XCTAssert(app.buttons[Photos_elem].exists)
+        }
+    }
+    
+    
+    func test023_UGCVideosScreen(){
+        
+        let app = XCUIApplication()
+        let collectionViewsQuery = app.collectionViews
+        collectionViewsQuery.buttons["btn dashboard e"].tap()
+        collectionViewsQuery.staticTexts["Video"].tap()
+        let Videos_Buttons = ["Featured", "User Videos", "btn ugc search", "btn ugc upload", "btn dashboard e", "logo twn tab"]
+        
+        // Check elements on Latest Photos screen
+        let numberOfVideoArticlesinView = collectionViewsQuery.cells.collectionViews.cells.count
+        print(numberOfVideoArticlesinView )
+        app.swipeUp()
+        XCTAssert(app.staticTexts["Videos"].exists)
+        for Videos_elem in Videos_Buttons{
+            XCTAssert(app.buttons[Videos_elem].exists)
+        }
+        
+        // Check elements on Most Popular Photos screen
+        app.buttons["User Videos"].tap()
+        app.swipeUp()
+        XCTAssert(app.staticTexts["Videos"].exists)
+        XCTAssert(app.images["icon_ugc_profile_gray"].exists)
+        for Videos_elem in Videos_Buttons{
+            XCTAssert(app.buttons[Videos_elem].exists)
+        }
     }
     
     
