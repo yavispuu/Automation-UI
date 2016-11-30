@@ -498,42 +498,57 @@ class WeatherEyeiPhoneUITests: XCTestCase {
             "Abbotsford",
             "Moncton"
         ];
+        //Check to see if there are any locations already in the locations list
+        sleep(10)
+        app.collectionViews.buttons["btn dashboard e"].tap()
+        app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
+        let noOfLocationsToDelete = app.tables.cells.count
+        app.buttons["btn x white"].tap()
+        app.buttons["icon header forward"].tap()
+    
         
-        // print(canadianCities.count)
-        
-        
-        //let maxNumberOfSavedLocations = 20;
-        //        for var i = 0; i < canadianCities.count && i < maxNumberOfSavedLocations; i+=1
-        for index in canadianCities{
-            sleep(5)
-            app.collectionViews.buttons["btn dashboard e"].tap()
+        func ToAddLocations(){
+            for index in canadianCities{
+                sleep(5)
+                app.collectionViews.buttons["btn dashboard e"].tap()
+                
+                let window = app.children(matching: .window).element(boundBy: 0)
+                window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
+                
+                window.children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .button).element.tap()
+                let textFields = app.searchFields["Enter postcode or city name"]
+                textFields.tap()
+                textFields.typeText(index)
+                window.children(matching: .other).element(boundBy: 3).tables.children(matching: .cell).element(boundBy: 0).tap()
+                
+            }
             
+            app.collectionViews.buttons["btn dashboard e"].tap()
             let window = app.children(matching: .window).element(boundBy: 0)
             window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
             window.children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .button).element.tap()
-            let textFields = app.searchFields["Enter postcode or city name"]
-            textFields.tap()
-            textFields.typeText(index)
-            window.children(matching: .other).element(boundBy: 3).tables.children(matching: .cell).element(boundBy: 0).tap()
             
+            XCTAssertEqual(app.searchFields["Enter postcode or city name"].exists, false)
         }
         
-        //let app = XCUIApplication()
-        app.collectionViews.buttons["btn dashboard e"].tap()
         
-        let window = app.children(matching: .window).element(boundBy: 0)
-        window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
-        window.children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .button).element.tap()
-        
-        
-        XCTAssertEqual(app.searchFields["Enter postcode or city name"].exists, false)
-        
-        
+        if(noOfLocationsToDelete==0){
+            ToAddLocations()
+        }
+        else{
+            // Delete the existing locations
+            self.test018_DeleteAllSavedLocations()
+            app.buttons["btn x white"].tap()
+            app.buttons["icon header forward"].tap()
+            ToAddLocations()
+        }
     }
     
+
     func test018_DeleteAllSavedLocations(){
         
         let app = XCUIApplication()
+        sleep(10)
         app.collectionViews.buttons["btn dashboard e"].tap()
         app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
         var noOfLocationsToDelete = app.tables.cells.count
@@ -545,6 +560,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
             print(noOfLocationsToDelete)
         }while noOfLocationsToDelete>0
         
+        XCTAssert(noOfLocationsToDelete==0)
     }
     
     func test019_TurnFollowMeOff(){
@@ -556,22 +572,24 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         let window = app.children(matching: .window).element(boundBy: 0)
         window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
         app.buttons["EDIT"].tap()
-        app.switches["1"].tap()
-        XCTAssert(app.switches["0"].exists)
+     
+                if(app.switches["0"].exists){
+                    print("FollowMe is OFF already")
+                }
+     
+                else{
+                    app.switches["1"].tap()
+                    XCTAssert(app.switches["0"].exists)
+                }
+     
         let doneButton = app.buttons["DONE"]
         doneButton.tap()
         app.buttons["btn x white"].tap()
-        XCTAssert(app.switches["0"].exists)
-        window.children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .button).element.tap()
-        let textFields = app.searchFields["Enter postcode or city name"]
-        textFields.tap()
-        textFields.typeText("Cooksville")
-        app.tables.staticTexts["Ontario, CA"].tap()
-        sleep(3)
-        app.collectionViews.buttons["btn dashboard e"].tap()
-        window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
-        XCTAssert(app.switches["0"].exists)
-        app.buttons["btn x white"].tap()
+        app.buttons["icon header forward"].tap()
+        app.buttons["logo twn tab"].tap()
+     //collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
+     //XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
+     
     }
     
     
@@ -580,16 +598,49 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
-        collectionViewsQuery.buttons["btn dashboard e"].tap()
+        let textFields = app.searchFields["Enter postcode or city name"]
+       
+        sleep(10)
         
+        if(textFields.exists)
+        {
+            textFields.tap()
+            textFields.typeText("Cooksville\r")
+            XCUIApplication().tables.staticTexts["Ontario, CA"].tap()
+            sleep(5)
+            XCTAssert(app.collectionViews.buttons["btn dashboard e"].exists)
+            collectionViewsQuery.buttons["btn dashboard e"].tap()
+            let window = app.children(matching: .window).element(boundBy: 0)
+            window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
+            app.buttons["EDIT"].tap()
+            app.switches["0"].tap()
+            print("Turned On Follow me with no location")
+            XCTAssert(app.switches["1"].exists)
+        }
+        
+        else{
+        collectionViewsQuery.buttons["btn dashboard e"].tap()
         let window = app.children(matching: .window).element(boundBy: 0)
         window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
+        app.buttons["EDIT"].tap()
+        
+        if(app.switches["1"].exists){
+           print("FollowMe is ON already")
+        }
+        else{
         app.switches["0"].tap()
-        XCTAssert(app.switches["1"].exists)
-        window.children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .other).element(boundBy: 3).children(matching: .scrollView).element(boundBy: 1).children(matching: .button).element.tap()
-        app.swipeLeft()
-        collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
-        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
+            print("Turned On Follow me")
+            XCTAssert(app.switches["1"].exists)
+        }
+        
+        }
+        app.buttons["btn x white"].tap()
+        sleep(5)
+        app.buttons["icon header forward"].tap()
+        app.buttons["logo twn tab"].tap()
+        //collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
+        //XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
+        
     }
     
     
@@ -609,9 +660,44 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         XCTAssert(ShortTermModule.children(matching: .other).element(boundBy: 3).staticTexts["Evening"].exists)
         XCTAssert(ShortTermModule.children(matching: .other).element(boundBy: 4).staticTexts["Overnight"].exists)
         
-        
     }
     
     
+    func test024_ErrorBarByAddingWrongLocation(){
+        
+        XCUIDevice.shared().orientation = .faceUp
+        XCUIDevice.shared().orientation = .faceUp
+        
+        let app = XCUIApplication()
+        sleep(10)
+        app.collectionViews.buttons["btn dashboard e"].tap()
+        
+        let window = app.children(matching: .window).element(boundBy: 0)
+        window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
+       
+        let noOfLocations = app.tables.cells.count
+        
+        if(noOfLocations>=20){
+            app.tables.cells.element(boundBy: 0).swipeLeft()
+            XCUIApplication().tables.buttons["Delete"].tap()
+        }
+        
+        window.children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .button).element.tap()
+        let textFields = app.searchFields["Enter postcode or city name"]
+        textFields.tap()
+        textFields.typeText("Gurret\r")
+     
+        let element = app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 3)
+        
+        //Validate if error bar is displayed
+        XCTAssert(element.children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .button).element.exists)
+        
+       textFields.buttons["Clear text"].tap()
+        textFields.tap()
+        textFields.typeText("Gary\r")
+        element.tables.children(matching: .cell).element(boundBy: 0).tap()
+        XCTAssert(app.collectionViews.buttons["btn dashboard e"].exists)
+        
+    }
+    
 }
-
