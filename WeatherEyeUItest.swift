@@ -25,14 +25,21 @@ class WeatherEyeiPhoneUITests: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+        
+        
     }
     
+    
+    // Global declaration
+    
+    let Obs_Labels = ["WIND","WIND GUST","HUMIDITY","PRESSURE","VISIBILITY","CEILING","SUNRISE","SUNSET","YESTERDAY"]
     
     func test001_ObsDetail() {
         let collectionViewsQuery = XCUIApplication().collectionViews
         sleep(5)
         collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
-        let Obs_Labels = ["WIND","WIND GUST","HUMIDITY","PRESSURE","VISIBILITY","CEILING","SUNRISE","SUNSET","YESTERDAY"]
+        // let Obs_Labels = ["WIND","WIND GUST","HUMIDITY","PRESSURE","VISIBILITY","CEILING","SUNRISE","SUNSET","YESTERDAY"]
+        
         for Obs_elem in Obs_Labels{
             XCTAssert(collectionViewsQuery.collectionViews.staticTexts[Obs_elem].exists)
         }
@@ -50,13 +57,15 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         collectionViewsQuery.collectionViews.buttons["AIR QUALITY"].tap()
         XCTAssert(app.staticTexts["CURRENT AIR QUALITY (AQHI)"].exists)
         app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).children(matching: .other).element(boundBy: 1).children(matching: .button).element.tap()
-        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
+        sleep(2)
+        
+        for Obs_elem in Obs_Labels{
+            XCTAssert(collectionViewsQuery.collectionViews.staticTexts[Obs_elem].exists)
+        }
         
     }
     
     func test003_UV() {
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
         
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
@@ -65,8 +74,10 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         collectionViewsQuery.collectionViews.buttons["UV REPORT"].tap()
         XCTAssert(app.staticTexts["CURRENT UV REPORT"].exists)
         app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).children(matching: .other).element(boundBy: 1).children(matching: .button).element.tap()
-        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
         
+        for Obs_elem in Obs_Labels{
+            XCTAssert(collectionViewsQuery.collectionViews.staticTexts[Obs_elem].exists)
+        }
         
     }
     
@@ -83,7 +94,11 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         collectionViewsQuery.collectionViews.buttons["POLLEN"].tap()
         XCTAssert(app.staticTexts["TODAY'S POLLEN REPORT"].exists)
         app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).children(matching: .other).element(boundBy: 1).children(matching: .button).element.tap()
-        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
+        
+        for Obs_elem in Obs_Labels{
+            XCTAssert(collectionViewsQuery.collectionViews.staticTexts[Obs_elem].exists)
+        }
+        
     }
     
     
@@ -99,7 +114,10 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         app.staticTexts["VIEW FULL POLLEN REPORT"].tap()
         app.buttons["btn x gray"].tap()
         app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).children(matching: .other).element(boundBy: 1).children(matching: .button).element.tap()
-        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
+        
+        for Obs_elem in Obs_Labels{
+            XCTAssert(collectionViewsQuery.collectionViews.staticTexts[Obs_elem].exists)
+        }
     }
     
     
@@ -147,13 +165,12 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         let noOfArticlesinView = collectionViewsQuery.cells.collectionViews.cells.count
         print(noOfArticlesinView)
         XCTAssert(noOfArticlesinView > 0)
-        //collectionViewsQuery.cells.collectionViews.cells.elementBoundByIndex(1).swipeUp()
-        
     }
     
     
     func test008_numberOfVideoArticles() {
         
+        let app = XCUIApplication()
         let collectionViewsQuery = XCUIApplication().collectionViews
         sleep(5)
         collectionViewsQuery.buttons["btn dashboard e"].tap()
@@ -165,11 +182,12 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         print(numberOfVideoArticlesinView )
         XCTAssert(numberOfVideoArticlesinView  > 0)
         
-        
+        let UserVideosButton = app.buttons["User Videos"]
+        UserVideosButton.tap()
+        let numberOfVideoArticlesinView_UserVideos =  collectionViewsQuery.cells.collectionViews.cells.count
+        XCTAssert(numberOfVideoArticlesinView_UserVideos  > 0)
+        XCTAssertTrue(UserVideosButton.isSelected)
     }
-    
-    
-    
     
     func test009_Videos() {
         let app = XCUIApplication()
@@ -242,52 +260,10 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         app.buttons["logo twn tab"].tap()
         XCTAssert(collectionViewsQuery.buttons["icon obsdetail e"].exists)
         
-        //        //Check UK Legends
-        //
-        //       //let app = XCUIApplication()
-        //        app.otherElements.containingType(.Image, identifier:"bg_dynamicwx_rainnight").childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.CollectionView).element.childrenMatchingType(.Cell).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Button).elementBoundByIndex(0).tap()
-        //        app.tables.staticTexts["City of London, UK"].tap()
-        //
-        //        //let collectionViewsQuery = app.collectionViews
-        //        collectionViewsQuery.buttons["btn dashboard e"].tap()
-        //        collectionViewsQuery.staticTexts["Weather Radar"].tap()
-        //        sleep(10)
-        //         XCTAssert(app.images["mg_maplegend_precip_foreca"].exists)
-        //
-        //       //let app = XCUIApplication()
-        //        app.otherElements.containingType(.Image, identifier:"bg_dynamicwx_rainday").childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Other).elementBoundByIndex(0).childrenMatchingType(.Button).elementBoundByIndex(0).tap()
-        //        app.tables.staticTexts["Ontario"].tap()
-        //         XCTAssert(collectionViewsQuery.buttons["icon obsdetail e"].exists)
+        //  Need to write test for UK Legends
+        //  Need to write tests for MapAnimation
         
     }
-    //
-    //
-    ////    func testMapsAnimation() {
-    ////
-    ////       Need to automate the Map animation testing
-    //
-    //    let app = XCUIApplication()
-    //    app.staticTexts["7:50"].tap()
-    //    app.staticTexts["2:50"].tap()
-    //    app.staticTexts["3:20"].tap()
-    //
-    //    let btnMapPlayButton = app.buttons["btn map play"]
-    //    btnMapPlayButton.tap()
-    //    btnMapPlayButton.tap()
-    //
-    //    let imgMaplegendPrecipEcImage = app.images["img_maplegend_precip_ec"]
-    //    imgMaplegendPrecipEcImage.tap()
-    //    imgMaplegendPrecipEcImage.tap()
-    //    imgMaplegendPrecipEcImage.tap()
-    //    imgMaplegendPrecipEcImage.tap()
-    //    imgMaplegendPrecipEcImage.tap()
-    //
-    //
-    //    //let app = XCUIApplication()
-    //    app.images["img_maplegend_precip_foreca"].tap()
-    //    app.buttons["btn map play"].tap()
-    //    //
-    ////    }
     
     
     func test011_Charts() {
@@ -316,77 +292,167 @@ class WeatherEyeiPhoneUITests: XCTestCase {
     }
     
     
-    func test012_SettingsC_Met(){
-        
-        // C and Metric to F and Im
+    func test012_SettingsC_MetToF_Im(){
         
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
         sleep(5)
         collectionViewsQuery.buttons["btn dashboard e"].tap()
         app.buttons["icon dash settings"].tap()
-        
         let app2 = app
-        app2.buttons["°F"].tap()
-        app2.buttons["Imperial"].tap()
+        
+        if(app2.buttons["°F"].isSelected && app2.buttons["Imperial"].isSelected){
+            print("App is already set to Fahrenheit and Imperial")
+        }
+            
+        else if(app2.buttons["°F"].isSelected && !app2.buttons["Imperial"].isSelected){
+            app2.buttons["Imperial"].tap()
+            print("Changed the app settings to Imperial")
+        }
+            
+        else if(!app2.buttons["°F"].isSelected && app2.buttons["Imperial"].isSelected){
+            app2.buttons["°F"].tap()
+            print("Changed the app settings to Fahrenheit")
+        }
+            
+        else{
+            app2.buttons["°F"].tap()
+            app2.buttons["Imperial"].tap()
+            print("Changed the app settings to Fahrenheit and Imperial")
+        }
+        
+        //Checking if the units are changed to Fahrenheit and Imperial
         app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .button).element(boundBy: 0).tap()
         app.buttons["icon header forward"].tap()
+        
+        //Validation for observation screen
         XCTAssert(collectionViewsQuery.collectionViews.staticTexts["°F"].exists)
         collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
         XCTAssert(collectionViewsQuery.collectionViews.staticTexts["mb"].exists)
         XCTAssert(collectionViewsQuery.collectionViews.staticTexts["mi"].exists)
+    }
+    
+    
+    func test014_SettingsF_ImToC_Met(){
         
-        
-        ///
-        
-        //   let app = XCUIApplication()
-        app.collectionViews.buttons["btn dashboard e"].tap()
-        app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
-        let tablesQuery = app.tables
-        XCTAssert(tablesQuery.cells.element(boundBy: 0).staticTexts["°F"].exists)
-        XCTAssert(tablesQuery.cells.element(boundBy: 1).staticTexts["°C"].exists)
-        tablesQuery.cells.element(boundBy: 0).staticTexts["°F"].tap()
-        
-        
-        //F and Im to C and Metric
+        let app = XCUIApplication()
+        let collectionViewsQuery = app.collectionViews
+        sleep(5)
         collectionViewsQuery.buttons["btn dashboard e"].tap()
         app.buttons["icon dash settings"].tap()
-        app2.buttons["°C"].tap()
-        app2.buttons["Metric"].tap()
+        let app2 = app
+        
+        if(app2.buttons["°C"].isSelected && app2.buttons["Metric"].isSelected){
+            print("App is already set to Celsius and Metric")
+        }
+            
+        else if(app2.buttons["°C"].isSelected && !app2.buttons["Metric"].isSelected){
+            app2.buttons["Metric"].tap()
+            print("Changed the app settings to Metric")
+        }
+            
+        else if(!app2.buttons["°C"].isSelected && app2.buttons["Metric"].isSelected){
+            app2.buttons["°C"].tap()
+            print("Changed the app settings to Celsius")
+        }
+            
+        else{
+            app2.buttons["°C"].tap()
+            app2.buttons["Metric"].tap()
+            print("Changed the app settings to Celsius and Metric")
+        }
+        
+        //Checking if the units are changed to Fahrenheit and Imperial
         app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .button).element(boundBy: 0).tap()
         app.buttons["icon header forward"].tap()
+        
+        //Validation for observation screen
         XCTAssert(collectionViewsQuery.collectionViews.staticTexts["°C"].exists)
-        //XCTAssert(collectionViewsQuery.collectionViews.staticTexts["°F"].exists)
         collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
         XCTAssert(collectionViewsQuery.collectionViews.staticTexts["kPa"].exists)
         XCTAssert(collectionViewsQuery.collectionViews.staticTexts["km"].exists)
+    }
+    
+    
+    func test015_SettingsToC_Im(){
         
-        //To C and Im
+        let app = XCUIApplication()
+        let collectionViewsQuery = app.collectionViews
+        sleep(5)
         collectionViewsQuery.buttons["btn dashboard e"].tap()
         app.buttons["icon dash settings"].tap()
-        app2.buttons["Imperial"].tap()
+        let app2 = app
+        
+        if(app2.buttons["°C"].isSelected && app2.buttons["Imperial"].isSelected){
+            print("App is already set to Celsius and Imperial")
+        }
+            
+        else if(app2.buttons["°C"].isSelected && !app2.buttons["Imperial"].isSelected){
+            app2.buttons["Imperial"].tap()
+            print("Changed the app settings to Imperial")
+        }
+            
+        else if(!app2.buttons["°C"].isSelected && app2.buttons["Imperial"].isSelected){
+            app2.buttons["°C"].tap()
+            print("Changed the app settings to Celsius")
+        }
+            
+        else{
+            app2.buttons["°C"].tap()
+            app2.buttons["Imperial"].tap()
+            print("Changed the app settings to Celsius and Imperial")
+        }
+        
+        //Checking if the units are changed to Fahrenheit and Imperial
         app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .button).element(boundBy: 0).tap()
         app.buttons["icon header forward"].tap()
+        
+        //Validation for observation screen
         XCTAssert(collectionViewsQuery.collectionViews.staticTexts["°C"].exists)
         collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
         XCTAssert(collectionViewsQuery.collectionViews.staticTexts["mb"].exists)
         XCTAssert(collectionViewsQuery.collectionViews.staticTexts["mi"].exists)
+    }
+    
+    
+    func test014_SettingsToF_Met(){
         
-        //To F and Metric
+        let app = XCUIApplication()
+        let collectionViewsQuery = app.collectionViews
+        sleep(5)
         collectionViewsQuery.buttons["btn dashboard e"].tap()
         app.buttons["icon dash settings"].tap()
-        app2.buttons["°F"].tap()
-        app2.buttons["Metric"].tap()
+        let app2 = app
+        
+        if(app2.buttons["°F"].isSelected && app2.buttons["Metric"].isSelected){
+            print("App is already set to Fahrenheit and Metric")
+        }
+            
+        else if(app2.buttons["°F"].isSelected && !app2.buttons["Metric"].isSelected){
+            app2.buttons["Fahrenheit"].tap()
+            print("Changed the app settings to Fahrenheit")
+        }
+            
+        else if(!app2.buttons["°F"].isSelected && app2.buttons["Metric"].isSelected){
+            app2.buttons["°F"].tap()
+            print("Changed the app settings to Fahrenheit")
+        }
+            
+        else{
+            app2.buttons["°F"].tap()
+            app2.buttons["Metric"].tap()
+            print("Changed the app settings to Fahrenheit and Metric")
+        }
+        
+        //Checking if the units are changed to Fahrenheit and Metric
         app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .button).element(boundBy: 0).tap()
         app.buttons["icon header forward"].tap()
+        
+        //Validation for observation screen
         XCTAssert(collectionViewsQuery.collectionViews.staticTexts["°F"].exists)
         collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
         XCTAssert(collectionViewsQuery.collectionViews.staticTexts["kPa"].exists)
         XCTAssert(collectionViewsQuery.collectionViews.staticTexts["km"].exists)
-        
-        // To C and Metric for all locations
-        
-        
     }
     
     
@@ -394,11 +460,12 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         
         
         let app = XCUIApplication()
+        sleep(5)
         app.collectionViews.buttons["btn dashboard e"].tap()
         app.buttons["icon dash settings"].tap()
         let app2 = app
         app2.buttons["°C"].tap()
-        app2.buttons["Imperial"].tap()
+        app2.buttons["Metric"].tap()
         let window = app.children(matching: .window).element(boundBy: 0)
         let element = window.children(matching: .other).element(boundBy: 2).children(matching: .other).element
         element.children(matching: .other).element(boundBy: 2).switches["0"].tap()
@@ -406,9 +473,10 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         let element2 = window.children(matching: .other).element(boundBy: 1).children(matching: .other).element
         element2.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
         let tablesQuery = app.tables
-        //print(tablesQuery.cells.count)
-        XCTAssert(tablesQuery.cells.staticTexts["°C"].exists)
         
+        //Checking if all the locations in the list has changed to Celsius and Metric
+        XCTAssert(tablesQuery.cells.staticTexts["°C"].exists)
+        XCTAssert(!tablesQuery.cells.staticTexts["°F"].exists)
         
     }
     
@@ -422,7 +490,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         app.buttons["icon dash settings"].tap()
         let app2 = app
         app2.buttons["°F"].tap()
-        app2.buttons["Metric"].tap()
+        app2.buttons["Imperial"].tap()
         let window = app.children(matching: .window).element(boundBy: 0)
         let element = window.children(matching: .other).element(boundBy: 2).children(matching: .other).element
         element.children(matching: .other).element(boundBy: 2).switches["0"].tap()
@@ -430,10 +498,10 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         let element2 = window.children(matching: .other).element(boundBy: 1).children(matching: .other).element
         element2.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
         let tablesQuery = app.tables
-        //print(tablesQuery.cells.count)
+        
+        //Checking if all the locations in the list has changed to Fahrenheit and Imperial
         XCTAssert(tablesQuery.cells.staticTexts["°F"].exists)
-        
-        
+        XCTAssert(!tablesQuery.cells.staticTexts["°C"].exists)
     }
     
     func test015_FAQ(){
@@ -450,7 +518,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
     }
     
     
-    func test016_TrendingNow(){
+    func test016_DashboardTrendingNow(){
         
         let app = XCUIApplication()
         sleep(5)
@@ -465,95 +533,95 @@ class WeatherEyeiPhoneUITests: XCTestCase {
     }
     
     
-    func test017_AddMaxLocations(){
-        
-        let app = XCUIApplication()
-        let canadianCities = [
-            "Calgary",
-            "Vancouver",
-            "Ottawa",
-            "Victoria",
-            "Winnipeg",
-            "Regina",
-            "Toronto",
-            "Montreal",
-            "Halifax",
-            "Fredericton",
-            "Charlottetown",
-            "Edmonton",
-            "Hamilton",
-            "Kitchener",
-            "London",
-            "Windsor",
-            "Saskatoon",
-            "St. John's",
-            "Abbotsford",
-            "Moncton"
-        ];
-        //Check to see if there are any locations already in the locations list
-        sleep(10)
-        app.collectionViews.buttons["btn dashboard e"].tap()
-        app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
-        let noOfLocationsToDelete = app.tables.cells.count
-        app.buttons["btn x white"].tap()
-        app.buttons["icon header forward"].tap()
-    
-        
-        func ToAddLocations(){
-            for index in canadianCities{
-                sleep(5)
-                app.collectionViews.buttons["btn dashboard e"].tap()
-                
-                let window = app.children(matching: .window).element(boundBy: 0)
-                window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
-                
-                window.children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .button).element.tap()
-                let textFields = app.searchFields["Enter postcode or city name"]
-                textFields.tap()
-                textFields.typeText(index)
-                window.children(matching: .other).element(boundBy: 3).tables.children(matching: .cell).element(boundBy: 0).tap()
-                
-            }
-            
-            app.collectionViews.buttons["btn dashboard e"].tap()
-            let window = app.children(matching: .window).element(boundBy: 0)
-            window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
-            window.children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .button).element.tap()
-            
-            XCTAssertEqual(app.searchFields["Enter postcode or city name"].exists, false)
-        }
-        
-        
-        if(noOfLocationsToDelete==0){
-            ToAddLocations()
-        }
-        else{
-            // Delete the existing locations
-            self.test018_DeleteAllSavedLocations()
-            app.buttons["btn x white"].tap()
-            app.buttons["icon header forward"].tap()
-            ToAddLocations()
-        }
-    }
-    
-
-    func test018_DeleteAllSavedLocations(){
-        
-        let app = XCUIApplication()
-        sleep(10)
-        app.collectionViews.buttons["btn dashboard e"].tap()
-        app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
-        var noOfLocationsToDelete = app.tables.cells.count
-        
-        repeat{
-            app.tables.cells.element(boundBy: 0).swipeLeft()
-            XCUIApplication().tables.buttons["Delete"].tap()
-            noOfLocationsToDelete = (noOfLocationsToDelete - 1)
-            print(noOfLocationsToDelete)
-        }while noOfLocationsToDelete>0
-        
-        XCTAssert(noOfLocationsToDelete==0)
-    }
+    /* func test017_AddMaxLocations(){
+     
+     let app = XCUIApplication()
+     let canadianCities = [
+     "Calgary",
+     "Vancouver",
+     "Ottawa",
+     "Victoria",
+     "Winnipeg",
+     "Regina",
+     "Toronto",
+     "Montreal",
+     "Halifax",
+     "Fredericton",
+     "Charlottetown",
+     "Edmonton",
+     "Hamilton",
+     "Kitchener",
+     "London",
+     "Windsor",
+     "Saskatoon",
+     "St. John's",
+     "Abbotsford",
+     "Moncton"
+     ];
+     //Check to see if there are any locations already in the locations list
+     sleep(10)
+     app.collectionViews.buttons["btn dashboard e"].tap()
+     app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
+     let noOfLocationsToDelete = app.tables.cells.count
+     app.buttons["btn x white"].tap()
+     app.buttons["icon header forward"].tap()
+     
+     
+     func ToAddLocations(){
+     for index in canadianCities{
+     sleep(5)
+     app.collectionViews.buttons["btn dashboard e"].tap()
+     
+     let window = app.children(matching: .window).element(boundBy: 0)
+     window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
+     
+     window.children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .button).element.tap()
+     let textFields = app.searchFields["Enter postcode or city name"]
+     textFields.tap()
+     textFields.typeText(index)
+     window.children(matching: .other).element(boundBy: 3).tables.children(matching: .cell).element(boundBy: 0).tap()
+     
+     }
+     
+     app.collectionViews.buttons["btn dashboard e"].tap()
+     let window = app.children(matching: .window).element(boundBy: 0)
+     window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
+     window.children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .button).element.tap()
+     
+     XCTAssertEqual(app.searchFields["Enter postcode or city name"].exists, false)
+     }
+     
+     
+     if(noOfLocationsToDelete==0){
+     ToAddLocations()
+     }
+     else{
+     // Delete the existing locations
+     self.test018_DeleteAllSavedLocations()
+     app.buttons["btn x white"].tap()
+     app.buttons["icon header forward"].tap()
+     ToAddLocations()
+     }
+     }
+     
+     
+     func test018_DeleteAllSavedLocations(){
+     
+     let app = XCUIApplication()
+     sleep(10)
+     app.collectionViews.buttons["btn dashboard e"].tap()
+     app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
+     var noOfLocationsToDelete = app.tables.cells.count
+     
+     repeat{
+     app.tables.cells.element(boundBy: 0).swipeLeft()
+     XCUIApplication().tables.buttons["Delete"].tap()
+     noOfLocationsToDelete = (noOfLocationsToDelete - 1)
+     print(noOfLocationsToDelete)
+     }while noOfLocationsToDelete>0
+     
+     XCTAssert(noOfLocationsToDelete==0)
+     } */
     
     func test019_TurnFollowMeOff(){
         
@@ -564,24 +632,24 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         let window = app.children(matching: .window).element(boundBy: 0)
         window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
         app.buttons["EDIT"].tap()
-     
-                if(app.switches["0"].exists){
-                    print("FollowMe is OFF already")
-                }
-     
-                else{
-                    app.switches["1"].tap()
-                    XCTAssert(app.switches["0"].exists)
-                }
-     
+        
+        if(app.switches["0"].exists){
+            print("FollowMe is OFF already")
+        }
+            
+        else{
+            app.switches["1"].tap()
+            XCTAssert(app.switches["0"].exists)
+        }
+        
         let doneButton = app.buttons["DONE"]
         doneButton.tap()
         app.buttons["btn x white"].tap()
         app.buttons["icon header forward"].tap()
         app.buttons["logo twn tab"].tap()
-     //collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
-     //XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
-     
+        //collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
+        //XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
+        
     }
     
     
@@ -591,7 +659,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
         let textFields = app.searchFields["Enter postcode or city name"]
-       
+        
         sleep(10)
         
         if(textFields.exists)
@@ -609,29 +677,29 @@ class WeatherEyeiPhoneUITests: XCTestCase {
             print("Turned On Follow me with no location")
             XCTAssert(app.switches["1"].exists)
         }
-        
+            
         else{
-        collectionViewsQuery.buttons["btn dashboard e"].tap()
-        let window = app.children(matching: .window).element(boundBy: 0)
-        window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
-        app.buttons["EDIT"].tap()
-        
-        if(app.switches["1"].exists){
-           print("FollowMe is ON already")
-        }
-        else{
-        app.switches["0"].tap()
-            print("Turned On Follow me")
-            XCTAssert(app.switches["1"].exists)
-        }
-        
+            collectionViewsQuery.buttons["btn dashboard e"].tap()
+            let window = app.children(matching: .window).element(boundBy: 0)
+            window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
+            app.buttons["EDIT"].tap()
+            
+            if(app.switches["1"].exists){
+                print("FollowMe is ON already")
+            }
+            else{
+                app.switches["0"].tap()
+                print("Turned On Follow me")
+                XCTAssert(app.switches["1"].exists)
+            }
+            
         }
         app.buttons["btn x white"].tap()
         sleep(5)
         app.buttons["icon header forward"].tap()
         app.buttons["logo twn tab"].tap()
-        //collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
-        //XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
+        collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
+        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
         
     }
     
@@ -643,13 +711,15 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         sleep(3)
         app.swipeUp()
         sleep(3)
-        //collectionViewsQuery.cells.collectionViews.childrenMatchingType(.Cell).elementBoundByIndex(5).tap()
-        collectionViewsQuery.collectionViews.staticTexts["NEXT 18 HOURS"].tap()
+        collectionViewsQuery.collectionViews.staticTexts["36 HOURS"].tap()
+        sleep(3)
+        app.buttons["Hourly"].tap()
+        app.buttons["14 Day"].tap()
         app.buttons["icon header back"].tap()
-        let ShortTermModule = app.collectionViews.cells.collectionViews.children(matching: .cell).element(boundBy: 5).children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element(boundBy: 1)
-        XCTAssert(ShortTermModule.children(matching: .other).element(boundBy: 2).staticTexts["Afternoon"].exists)
-        XCTAssert(ShortTermModule.children(matching: .other).element(boundBy: 3).staticTexts["Evening"].exists)
-        XCTAssert(ShortTermModule.children(matching: .other).element(boundBy: 4).staticTexts["Overnight"].exists)
+        app.buttons["logo twn tab"].tap()
+        collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
+        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
+        
         
     }
     
@@ -657,6 +727,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         
         let app = XCUIApplication()
         let collectionViewsQuery = app.collectionViews
+        sleep(5)
         collectionViewsQuery.buttons["btn dashboard e"].tap()
         collectionViewsQuery.staticTexts["Photos"].tap()
         let Photos_Buttons = ["Latest", "Most Popular", "btn ugc search", "btn ugc upload","icon header back"]
@@ -670,6 +741,7 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         
         // Check elements on Most Popular Photos screen
         app.buttons["Most Popular"].tap()
+        //XCTAssertTrue( app.buttons["Most Popular"].isSelected)
         app.swipeUp()
         XCTAssert(app.staticTexts["Photo Gallery"].exists)
         for Photos_elem in Photos_Buttons{
@@ -708,16 +780,12 @@ class WeatherEyeiPhoneUITests: XCTestCase {
     
     func test024_ErrorBarByAddingWrongLocation(){
         
-        XCUIDevice.shared().orientation = .faceUp
-        XCUIDevice.shared().orientation = .faceUp
-        
         let app = XCUIApplication()
         sleep(10)
         app.collectionViews.buttons["btn dashboard e"].tap()
         
         let window = app.children(matching: .window).element(boundBy: 0)
         window.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .button).element(boundBy: 0).tap()
-       
         let noOfLocations = app.tables.cells.count
         
         if(noOfLocations>=20){
@@ -729,18 +797,41 @@ class WeatherEyeiPhoneUITests: XCTestCase {
         let textFields = app.searchFields["Enter postcode or city name"]
         textFields.tap()
         textFields.typeText("Gurret\r")
-     
         let element = app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 3)
         
         //Validate if error bar is displayed
         XCTAssert(element.children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .button).element.exists)
         
-       textFields.buttons["Clear text"].tap()
+        textFields.buttons["Clear text"].tap()
         textFields.tap()
         textFields.typeText("Gary\r")
         element.tables.children(matching: .cell).element(boundBy: 0).tap()
         XCTAssert(app.collectionViews.buttons["btn dashboard e"].exists)
         
+    }
+    
+    func test025_NotificationTypeScreen(){
+        
+        let app = XCUIApplication()
+        let collectionViewsQuery = app.collectionViews
+        let btnDashboardEButton = collectionViewsQuery.buttons["btn dashboard e"]
+        sleep(5)
+        btnDashboardEButton.tap()
+        XCTAssert(collectionViewsQuery.staticTexts["Notifications"].exists)
+        
+        if(collectionViewsQuery.staticTexts["Notifications"].exists){
+            collectionViewsQuery.staticTexts["Notifications"].tap()
+            sleep(2)
+            app.staticTexts["Notification Type"].tap()
+            app.buttons["btn x gray"].tap()
+        }
+        else{
+            print("Notifications are only for NA locations")
+        }
+        app.buttons["icon header forward"].tap()
+        app.buttons["logo twn tab"].tap()
+        collectionViewsQuery.collectionViews.buttons["icon obsdetail e"].tap()
+        XCTAssert(collectionViewsQuery.collectionViews.staticTexts["WIND"].exists)
     }
     
 }
